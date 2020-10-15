@@ -108,6 +108,7 @@ router.get("/", auth, async (req, res) => {
     displayName: user.displayName,
     id: user._id,
     avatar: user.avatar,
+    username: user.username
   });
 });
 
