@@ -1,7 +1,7 @@
-import express from 'express'
-import cors from 'cors'
-import mongoose from 'mongoose'
-import Pusher from 'pusher'
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+require("dotenv").config();
 
 
 
@@ -27,3 +27,7 @@ mongoose.connect(
     console.log("MongoDB connection established");
   }
 );
+
+
+
+app.use("/users", require("./routes/userRouter"));
