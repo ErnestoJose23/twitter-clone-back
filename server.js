@@ -49,7 +49,8 @@ mongoose.connect(
         pusher.trigger('posts', 'inserted', {
           user: postDetails.iser,
           tweet: postDetails.tweet,
-          imagename: postDetails.imagename
+          imagename: postDetails.imagename,
+          timestamp: postDetails.timestamp
         })
       }else{
         console.log("Error triggering Pusher");
