@@ -37,12 +37,12 @@ router.post("/uploadImg", upload.single("file"), (req, res) => {
 router.post("/upload", async (req, res) => {
   try {
     console.log(req.body);
-    let { user_id, title, displayName, imagename, timestamp } = req.body;
+    let { user_id, tweet,  imagename, timestamp } = req.body;
     const newFeed = new Feed({
       user_id,
-      displayName,
+      
       imagename,
-      title,
+      tweet,
       timestamp,
     });
 
@@ -77,6 +77,19 @@ router.get("/sync/:postId", (req, res) => {
         console.log("success");
       }
     });
+});
+
+router.get("/sync/:user_id", async (req,res) => {
+  try {
+    const tweets = await Feed.find({ user_id: req.params.user_id });
+    if (!tweets) {
+        return res.status(400).json({ msg: "No user found." });
+    } else {
+      res.status(200).send(img);
+    }
+  } catch {
+    return res.status(400).json({ msg: "No user found." });
+  }
 });
 
 router.get(`/getImg/:imagename`, async (req, res) => {

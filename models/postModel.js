@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
 const postSchema = new mongoose.Schema({
-  user_id: { type: String, required: true, unique: true },
-  tweet: { type: String, required: true, minlength: 5 },
+  user_id: { type: String, required: true,},
+  tweet: { type: String, required: true, minlength: 2 },
   imagename: { type: String },
   timestamp: { type: String },
   replies: [
