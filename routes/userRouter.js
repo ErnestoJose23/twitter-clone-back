@@ -125,7 +125,9 @@ router.get("/", auth, async (req, res) => {
     displayName: user.displayName,
     id: user._id,
     avatar: user.avatar,
-    username: user.username
+    username: user.username,
+    cover: user.cover,
+    description: user.description
   });
 });
 
@@ -186,5 +188,19 @@ router.get("/following/:user_id", async (req, res) => {
     return res.status(400).json({ msg: "Could find friends" });
   }
 });
+
+
+router.post("/uploadCover", upload.single("file"), async (req, res) => {
+  
+  console.log(req.headers)
+  var newvalues = { $set: {cover: req.headers.path } };
+  const user = await User.updateOne({_id: req.headers.user_id}, newvalues, function(err, res) {
+    if (err) throw err;
+    console.log("1 document updated");
+  });
+
+  console.log(req.headers.path);
+});
+
 
 module.exports = router;
