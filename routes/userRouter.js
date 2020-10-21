@@ -127,7 +127,11 @@ router.get("/", auth, async (req, res) => {
     avatar: user.avatar,
     username: user.username,
     cover: user.cover,
-    description: user.description
+    description: user.description,
+    followers: user.followers,
+    following: user.following,
+    followersCount: user.followers.length,
+    followingCount: user.following.length
   });
 });
 
@@ -175,12 +179,27 @@ router.get(`/getUserName/:name`, async (req, res) => {
 router.get("/following/:user_id", async (req, res) => {
   try {
     User.findById(req.params.user_id)
-      .populate("following")
       .exec(function (err, user) {
         if (err) {
           console.log(err);
         } else {
-          res.status(200).json(user);
+          res.status(200).json(user.following.length);
+          console.log("success");
+        }
+      });
+  } catch {
+    return res.status(400).json({ msg: "Could find friends" });
+  }
+});
+
+router.get("/followers/:user_id", async (req, res) => {
+  try {
+    User.findById(req.params.user_id)
+      .exec(function (err, user) {
+        if (err) {
+          console.log(err);
+        } else {
+          res.status(200).json(user.followers.length);
           console.log("success");
         }
       });
@@ -194,6 +213,18 @@ router.post("/uploadCover", upload.single("file"), async (req, res) => {
   
   console.log(req.headers)
   var newvalues = { $set: {cover: req.headers.path } };
+  const user = await User.updateOne({_id: req.headers.user_id}, newvalues, function(err, res) {
+    if (err) throw err;
+    console.log("1 document updated");
+  });
+
+  console.log(req.headers.path);
+});
+
+router.post("/uploadAvatar", upload.single("file"), async (req, res) => {
+  
+  console.log(req.headers)
+  var newvalues = { $set: {avatar: req.headers.path } };
   const user = await User.updateOne({_id: req.headers.user_id}, newvalues, function(err, res) {
     if (err) throw err;
     console.log("1 document updated");
